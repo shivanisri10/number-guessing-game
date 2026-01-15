@@ -1,14 +1,14 @@
 import random
 
-print("Number Guessing Game
+print("""Number Guessing Game
 --------------------
 How to Play:
 - I’ll pick a number between 1 and 100.
 - You try to guess it.
 - After each guess, I’ll tell you if you’re too high or too low.
 - Keep going until you get it right. I’ll show how many tries you needed.
-- Play as many rounds as you like. The game keeps track of your best score.")
-
+- Play as many rounds as you like. The game keeps track of your best score.
+""")
 
 def show_menu():
     print("\n--- Number Guessing Game ---")
@@ -19,7 +19,7 @@ def show_menu():
 def play_round(high_score):
     number = random.randint(1, 100)
     attempts = 0
-    print("\nI have picked a number between 1 and 100, Try to guess it!")
+    print("\nI have picked a number between 1 and 100. Try to guess it!")
 
     while True:
         try:
@@ -31,9 +31,9 @@ def play_round(high_score):
                 continue
 
             if guess < number:
-                print("Too low.")
+                print("Too low")
             elif guess > number:
-                print("Too high.")
+                print("Too high")
             else:
                 print(f"Correct! The number was {number}")
                 print(f"You got it in {attempts} tries")
@@ -41,6 +41,7 @@ def play_round(high_score):
                     high_score = attempts
                     print("New high score!")
                 break
+
         except ValueError:
             print("That’s not a valid number, Try again!")
 
@@ -50,18 +51,23 @@ def main():
     high_score = None
     while True:
         show_menu()
-        choice = int(input("Enter your choice"))
+        try:
+            choice = int(input("Enter your choice: "))
+        except ValueError:
+            print("Please enter a number (1–3)")
+            continue
+
         if choice == 1:
             high_score = play_round(high_score)
         elif choice == 2:
             if high_score is None:
-                print("No high score yet. Play a round first!")
+                print("No high score yet, Play a round first!")
             else:
                 print(f"High Score: {high_score} attempts")
         elif choice == 3:
-            print("Thanks for playing")
+            print("Thanks for playing!")
             break
         else:
             print("Invalid choice. Please enter 1, 2, or 3")
 
-    main()
+main()
