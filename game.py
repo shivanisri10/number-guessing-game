@@ -1,74 +1,67 @@
-"""
-Number Guessing Game
---------------------
-How to Play:
-- The computer picks a random number between 1 and 100.
-- You try to guess the number.
-- After each guess, you’ll be told if it’s too high or too low.
-- The game ends when you guess correctly, and shows how many tries it took.
-- You can play multiple rounds, and the game will remember your best score.
-"""
-
 import random
 
-def get_guess():
-    """Ask the user to enter a valid number between 1 and 100."""
+print("Number Guessing Game
+--------------------
+How to Play:
+- I’ll pick a number between 1 and 100.
+- You try to guess it.
+- After each guess, I’ll tell you if you’re too high or too low.
+- Keep going until you get it right. I’ll show how many tries you needed.
+- Play as many rounds as you like. The game keeps track of your best score.")
+
+
+def show_menu():
+    print("\n--- Number Guessing Game ---")
+    print("1. Play")
+    print("2. Check High Score")
+    print("3. Exit")
+
+def play_round(high_score):
+    number = random.randint(1, 100)
+    attempts = 0
+    print("\nI have picked a number between 1 and 100, Try to guess it!")
+
     while True:
         try:
-            guess = int(input("Enter your guess (1-100): "))
-            if 1 <= guess <= 100:
-                return guess
+            guess = int(input("Your guess: "))
+            attempts += 1
+
+            if guess < 1 or guess > 100:
+                print("Pick a number between 1 and 100.")
+                continue
+
+            if guess < number:
+                print("Too low.")
+            elif guess > number:
+                print("Too high.")
             else:
-                print("Please enter a number between 1 and 100.")
+                print(f"Correct! The number was {number}")
+                print(f"You got it in {attempts} tries")
+                if high_score is None or attempts < high_score:
+                    high_score = attempts
+                    print("New high score!")
+                break
         except ValueError:
-            print("That’s not a valid number. Try again.")
+            print("That’s not a valid number, Try again!")
 
-def play_round():
-    """Play one round of the guessing game and return number of attempts."""
-    secret = random.randint(1, 100)
-    tries = 0
-    print("\nI’ve picked a number between 1 and 100. Can you guess it?")
-
-    while True:
-        guess = get_guess()
-        tries += 1
-        if guess < secret:
-            print("Too low.")
-        elif guess > secret:
-            print("Too high.")
-        else:
-            print(f"Correct! The number was {secret}.")
-            print(f"You guessed it in {tries} tries.")
-            return tries
+    return high_score
 
 def main():
-    """Main loop for the game with high score tracking."""
-    best_score = None
-    print("Welcome to the Number Guessing Game!")
-
+    high_score = None
     while True:
-        print("\nMenu:")
-        print("1. Play")
-        print("2. View Best Score")
-        print("3. Exit")
-
-        choice = input("Choose an option: ")
-
-        if choice == "1":
-            attempts = play_round()
-            if best_score is None or attempts < best_score:
-                best_score = attempts
-                print("New best score!")
-        elif choice == "2":
-            if best_score is None:
-                print("No best score yet. Play a game first.")
+        show_menu()
+        choice = int(input("Enter your choice"))
+        if choice == 1:
+            high_score = play_round(high_score)
+        elif choice == 2:
+            if high_score is None:
+                print("No high score yet. Play a round first!")
             else:
-                print(f"Best score so far: {best_score} attempts")
-        elif choice == "3":
-            print("Thanks for playing. Goodbye!")
+                print(f"High Score: {high_score} attempts")
+        elif choice == 3:
+            print("Thanks for playing")
             break
         else:
-            print("Invalid choice. Please pick 1, 2, or 3.")
+            print("Invalid choice. Please enter 1, 2, or 3")
 
-if __name__ == "__main__":
     main()
